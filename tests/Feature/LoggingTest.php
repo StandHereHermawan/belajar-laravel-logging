@@ -61,4 +61,27 @@ class LoggingTest extends TestCase
         self::assertTrue(true);
         self::assertFalse(false);
     }
+
+    public function testFileHandler()
+    {
+        $stderrLogger = Log::channel('file');
+
+        for ($i = 0; $i < 5; $i++) {
+            $stderrLogger->info("Hello " . uniqid(), [
+                "user" => "Guest",
+                "channel" => "file"
+            ]); # Only Send to stderr (console) channel
+        }
+
+        Log::withContext([
+            "user" => "Terry Davis",
+            "channel" => "default channel"
+        ]);
+        for ($i = 0; $i < 5; $i++) {
+            Log::info("Hello " . uniqid());
+        }
+
+        self::assertTrue(true);
+        self::assertFalse(false);
+    }
 }
